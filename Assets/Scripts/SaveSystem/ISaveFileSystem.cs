@@ -6,9 +6,11 @@ using System.Threading.Tasks;
 
 namespace Assets.Scripts.SaveSystem
 {
-	public interface ISaveSystem
+	public interface ISaveFileSystem : ISaveSystem
 	{
-		bool SaveObject<T>(T obj);
-		T LoadObject<T>();
+		string DirectoryName { get; set; }
+
+		bool SaveObject<T>(T obj, string key);
+		T LoadObject<T>(string key);
 	}
 }
