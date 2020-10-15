@@ -10,6 +10,6 @@ namespace Assets.Scripts.SaveSystem
 	{
 		bool SaveObject<T>(T obj);
 		bool SaveObject<T>(T obj, string key);
-		T LoadObject<T>(T obj, string key);
+		T LoadObject<T>(string key);
 	}
 }
