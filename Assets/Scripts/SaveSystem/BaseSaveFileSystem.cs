@@ -53,7 +53,5 @@ namespace Assets.Scripts.SaveSystem
 
 		protected abstract bool SaveObjectImplementaion<T>(Stream stream, T obj);
 		protected abstract T LoadObjectImplementatio<T>(Stream stream);
-
-
 	}
 }

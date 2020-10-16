@@ -6,7 +6,7 @@ using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Assets.Scripts.SaveSystem
+namespace Assets.Scripts.SaveSystem.Format
 {
 	public abstract class FormatterSaveSystem<T> : BaseSaveFileSystem where T : IFormatter, new()
 	{
