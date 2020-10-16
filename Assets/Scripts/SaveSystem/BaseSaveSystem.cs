@@ -8,13 +8,13 @@ using UnityEngine;
 
 namespace Assets.Scripts.SaveSystem
 {
-	public abstract class BaseSaveFileSystem : ISaveSystem
+	public abstract class BaseSaveFileSystem : ISaveFileSystem, ISaveSystem
 	{
 		public string DirectoryName { get; set; }
 		public abstract string Extension { get; }
 		public string LastKey { get => lastKey != "" ? lastKey : DefaultKey; set => lastKey = value; }
 		public string SavePath => DirectoryName + LastKey + "." + Extension;
-		protected virtual string DefaultKey => "SaveFile";
+		public virtual string DefaultKey => "SaveFile";
 
 		private string lastKey;
 
@@ -32,16 +32,28 @@ namespace Assets.Scripts.SaveSystem
 			LastKey = key;
 			Directory.CreateDirectory(DirectoryName);
 
-			return SaveObjectImplementaion();
+			using (FileStream stream = new FileStream(SavePath, FileMode.Create))
+			{
+				return SaveObjectImplementaion(stream, obj);
+			}
+		}
+		public T LoadObject<T>()
+		{
+			return LoadObject<T>(LastKey);
 		}
 		public virtual T LoadObject<T>(string key)
 		{
 			LastKey = key;
 
-			return LoadObjectImplementatio<T>();
+			using (FileStream stream = new FileStream(SavePath, FileMode.Open))
+			{
+				return LoadObjectImplementatio<T>(stream);
+			}
 		}
 
-		protected abstract bool SaveObjectImplementaion();
-		protected abstract T LoadObjectImplementatio<T>();
+		protected abstract bool SaveObjectImplementaion<T>(Stream stream, T obj);
+		protected abstract T LoadObjectImplementatio<T>(Stream stream);
+
+
 	}
 }
