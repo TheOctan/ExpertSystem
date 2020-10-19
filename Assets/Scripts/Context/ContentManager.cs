@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ContentManager: MonoBehaviour
 {
@@ -8,10 +9,14 @@ public class ContentManager: MonoBehaviour
     public GameObject ObjectColumnPrefab;
     public GameObject QuestionColumnPrefab;
     public GameObject AddColumnPrefab;
+    public GameObject ObjectContainerPrefab;
 
     [Header("Columns")]
     public RectTransform ObjectColumn;
     public RectTransform AddColumn;
+    public RectTransform addRowButton;
+
+    public Vector2 size { get; private set; }
 
     void Start()
     {
@@ -22,17 +27,12 @@ public class ContentManager: MonoBehaviour
 	{
 		var column = Instantiate(QuestionColumnPrefab, transform);
         SwapChildObjects(AddColumn, column.transform);
-	}
-
-    private void SwapChildObjects(Transform left, Transform right)
-	{
-        var leftIndex = left.transform.GetSiblingIndex();
-		right.transform.SetSiblingIndex(leftIndex);
-	}
+	}    
 
     public void OnAddRowButtonClick()
 	{
-
+        var objectContainer = Instantiate(ObjectContainerPrefab, ObjectColumn.transform);
+        SwapChildObjects(addRowButton, objectContainer.transform);
 	}
 
     public void OnRemoveColumnButtonClick(int index)
@@ -44,4 +44,10 @@ public class ContentManager: MonoBehaviour
 	{
 
 	}
+
+    private void SwapChildObjects(Transform first, Transform second)
+    {
+        var leftIndex = first.transform.GetSiblingIndex();
+        second.transform.SetSiblingIndex(leftIndex);
+    }
 }

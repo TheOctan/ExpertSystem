@@ -648,10 +648,8 @@ MonoBehaviour:
     type: 3}
   AddColumnPrefab: {fileID: 5874731231958432608, guid: 1383f76e434cda149a4c92966dcbd2c0,
     type: 3}
-  Background: {fileID: 696965249}
   ObjectColumn: {fileID: 1877779594}
-  QuestionColumn: {fileID: 1101564130}
-  AddColumn: {fileID: 1101564130}
+  AddColumn: {fileID: 345789340}
 --- !u!1 &328089908
 GameObject:
   m_ObjectHideFlags: 0
