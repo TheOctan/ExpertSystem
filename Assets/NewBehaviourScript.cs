@@ -1,17 +1,23 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class NewBehaviourScript : MonoBehaviour
 {
-    public RectTransform[] childs;
+	public GameObject button;
 
-    void Start()
-    {
-		foreach (var item in childs)
-		{
-            Debug.Log(item.GetSiblingIndex());
-		}
-    }
+	private void Start()
+	{
+		
+	}
+
+	public void OnDestroyButtonClick()
+	{
+		Destroy(button);
+		Debug.Log("Destroyed");
+	}
+
+
 
 }
