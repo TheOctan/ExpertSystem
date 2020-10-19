@@ -6,9 +6,9 @@ using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 
-namespace Assets.Scripts.SaveSystem
+namespace Assets.Scripts.SaveSystem.Serialization
 {
-	public abstract class BaseSaveFileSystem : ISaveFileSystem, ISaveSystem
+	public abstract class BaseSerializationFileSystem : ISerializationFileSystem, ISerializationSystem
 	{
 		public string DirectoryName { get; set; }
 		public abstract string Extension { get; }
@@ -18,7 +18,7 @@ namespace Assets.Scripts.SaveSystem
 
 		private string lastKey;
 
-		public BaseSaveFileSystem(string directoryName)
+		public BaseSerializationFileSystem(string directoryName)
 		{
 			DirectoryName = directoryName;
 		}
@@ -30,7 +30,10 @@ namespace Assets.Scripts.SaveSystem
 		public virtual bool SaveObject<T>(T obj, string key)
 		{
 			LastKey = key;
-			Directory.CreateDirectory(DirectoryName);
+			if (!Directory.Exists(DirectoryName))
+			{
+				Directory.CreateDirectory(DirectoryName);
+			}
 
 			using (FileStream stream = new FileStream(SavePath, FileMode.Create))
 			{

@@ -5,12 +5,12 @@ using System.Runtime.Serialization.Formatters.Soap;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Assets.Scripts.SaveSystem.Format
+namespace Assets.Scripts.SaveSystem.Serialization.Format
 {
-	public class SoapSaveSystem : FormatterSaveSystem<SoapFormatter>
+	public class SoapSerializationSystem : FormatterSaveSystem<SoapFormatter>
 	{
 		public override string Extension => "soap";
-		public SoapSaveSystem(string directoryName) : base(directoryName)
+		public SoapSerializationSystem(string directoryName) : base(directoryName)
 		{
 		}
 	}

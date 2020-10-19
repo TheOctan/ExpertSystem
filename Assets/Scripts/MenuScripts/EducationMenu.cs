@@ -1,16 +1,17 @@
 ﻿using Assets.Scripts.SaveSystem;
-using Assets.Scripts.SaveSystem.Format;
+using Assets.Scripts.SaveSystem.Serialization;
+using Assets.Scripts.SaveSystem.Serialization.Format;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class EducationMenu : MonoBehaviour
 {
-	private BaseSaveFileSystem saveSystem;
+	private BaseSerializationFileSystem saveSystem;
 
 	private void Awake()
 	{
-		saveSystem = new XmlSaveSystem(Application.persistentDataPath + "/Saves/");
+		saveSystem = new XmlSerializationSystem(Application.persistentDataPath + "/Saves/");
 	}
 
 	public void OnLoadButtonClick()

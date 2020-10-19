@@ -6,12 +6,12 @@ using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Assets.Scripts.SaveSystem.Format
+namespace Assets.Scripts.SaveSystem.Serialization.Format
 {
-	public class BinarySaveSystem : FormatterSaveSystem<BinaryFormatter>
+	public class BinarySerializationSystem : FormatterSaveSystem<BinaryFormatter>
 	{
 		public override string Extension => "bin";
-		public BinarySaveSystem(string directoryName) : base(directoryName)
+		public BinarySerializationSystem(string directoryName) : base(directoryName)
 		{
 		}
 	}
