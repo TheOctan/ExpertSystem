@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Assets.Scripts.SaveSystem
+namespace Assets.Scripts.SaveSystem.Serialization
 {
-	public interface ISaveFileSystem : ISaveSystem
+	public interface ISerializationFileSystem : ISerializationSystem
 	{
 		string DirectoryName { get; set; }
 

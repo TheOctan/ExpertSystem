@@ -6,9 +6,9 @@ using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Assets.Scripts.SaveSystem.Format
+namespace Assets.Scripts.SaveSystem.Serialization.Format
 {
-	public abstract class FormatterSaveSystem<T> : BaseSaveFileSystem where T : IFormatter, new()
+	public abstract class FormatterSaveSystem<T> : BaseSerializationFileSystem where T : IFormatter, new()
 	{
 		public override abstract string Extension { get; }
 

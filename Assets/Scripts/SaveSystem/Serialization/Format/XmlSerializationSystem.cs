@@ -6,12 +6,12 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 
-namespace Assets.Scripts.SaveSystem.Format
+namespace Assets.Scripts.SaveSystem.Serialization.Format
 {
-	public class XmlSaveSystem : BaseSaveFileSystem
+	public class XmlSerializationSystem : BaseSerializationFileSystem
 	{
 		public override string Extension => "xml";
-		public XmlSaveSystem(string directoryName) : base(directoryName)
+		public XmlSerializationSystem(string directoryName) : base(directoryName)
 		{
 		}
 
