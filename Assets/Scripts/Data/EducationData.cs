@@ -12,8 +12,8 @@ public class EducationData
 	public List<string> questions;
 	public List<bool> answers;
 
-	public uint width;
-	public uint height;
+	public int width;
+	public int height;
 
 	public EducationData()
 	{
