@@ -15,11 +15,6 @@ public class EducationData
 	public int width;
 	public int height;
 
-	public EducationData()
-	{
-		
-	}
-
 	public override string ToString()
 	{
 		StringBuilder stringBuilder = new StringBuilder();
