@@ -44,9 +44,9 @@ public class ContentManager : MonoBehaviour
 		InstantieteCell(objectContainerPrefab, objectColumn, addRowButton, RemoveRow);
 
 		Height++;
-		for (int x = 2; x < transform.childCount - 1; x++)
+		for (int i = 2; i < transform.childCount - 1; i++)
 		{
-			var column = transform.GetChild(x);
+			var column = transform.GetChild(i);
 			Instantiate(toggleContainerPrefab, column);
 		}
 	}
