@@ -8,9 +8,10 @@ namespace Assets.Scripts.SaveSystem.Serialization
 {
 	public interface ISerializationFileSystem : ISerializationSystem
 	{
+		string Extension { get; }
 		string DirectoryName { get; set; }
 
-		bool SaveObject<T>(T obj, string key);
-		T LoadObject<T>(string key);
+		bool SerializeObject<T>(T obj, string key);
+		T DeserializeObject<T>(string key);
 	}
 }

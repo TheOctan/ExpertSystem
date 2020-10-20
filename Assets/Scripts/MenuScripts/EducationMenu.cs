@@ -19,7 +19,7 @@ public class EducationMenu : MonoBehaviour
 	{
 		Debug.Log(Application.persistentDataPath);
 
-		var objData = saveSystem.LoadObject<EducationData>("education");
+		var objData = saveSystem.DeserializeObject<EducationData>("education");
 		Debug.Log(objData);
 	}
 
@@ -49,6 +49,6 @@ public class EducationMenu : MonoBehaviour
 			}
 		};
 
-		saveSystem.SaveObject(data, "education");
+		saveSystem.SerializeObject(data, "education");
 	}
 }

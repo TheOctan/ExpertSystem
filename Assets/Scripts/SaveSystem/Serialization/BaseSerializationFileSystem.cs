@@ -19,11 +19,11 @@ namespace Assets.Scripts.SaveSystem.Serialization
 			DirectoryName = directoryName;
 		}
 
-		public virtual bool SaveObject<T>(T obj)
+		public virtual bool SerializeObject<T>(T obj)
 		{
-			return SaveObject(obj, DefaultKey);
+			return SerializeObject(obj, DefaultKey);
 		}
-		public virtual bool SaveObject<T>(T obj, string key)
+		public virtual bool SerializeObject<T>(T obj, string key)
 		{
 			if (!Directory.Exists(DirectoryName))
 			{
@@ -35,11 +35,11 @@ namespace Assets.Scripts.SaveSystem.Serialization
 				return SaveObjectImplementaion(stream, obj);
 			}
 		}
-		public T LoadObject<T>()
+		public T DeserializeObject<T>()
 		{
-			return LoadObject<T>(DefaultKey);
+			return DeserializeObject<T>(DefaultKey);
 		}
-		public virtual T LoadObject<T>(string key)
+		public virtual T DeserializeObject<T>(string key)
 		{
 			if(!File.Exists(SavePath(key)))
 			{
