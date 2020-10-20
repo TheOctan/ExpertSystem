@@ -17,8 +17,8 @@ public class ContentManager : MonoBehaviour
 	public RectTransform addColumn;
 	public RectTransform addRowButton;
 
-	public uint Width { get; private set; }
-	public uint Height { get; private set; }
+	public int Width { get; private set; }
+	public int Height { get; private set; }
 
 	private void Awake()
 	{
@@ -39,7 +39,6 @@ public class ContentManager : MonoBehaviour
 			var toggleContainer = Instantiate(toggleContainerPrefab, column);
 		}
 	}
-
 	public void AddRow()
 	{
 		var objectContainer = Instantiate(objectContainerPrefab, objectColumn);
@@ -54,7 +53,6 @@ public class ContentManager : MonoBehaviour
 			Instantiate(toggleContainerPrefab, column);
 		}
 	}
-
 	public void RemoveColumn(int index)
 	{
 		if (Width > 1)
@@ -66,7 +64,6 @@ public class ContentManager : MonoBehaviour
 			Width--;
 		}
 	}
-
 	public void RemoveRow(int index)
 	{
 		if (Height > 1)
@@ -84,7 +81,45 @@ public class ContentManager : MonoBehaviour
 			Height--;
 		}
 	}
-
+	public void UpdateColumnsCount(int count)
+	{
+		if (count > 0 && Width != count)
+		{
+			while (Width != count)
+			{
+				if (count > Width)
+				{
+					AddColumn();
+				}
+				else
+				{
+					RemoveColumn(Width - 1);
+				}
+			}
+		}
+	}
+	public void UpdateRowsCount(int count)
+	{
+		if (count > 0 && Height != count)
+		{
+			while (Height != count)
+			{
+				if (count > Height)
+				{
+					AddRow();
+				}
+				else
+				{
+					RemoveRow(Height - 1);
+				}
+			}
+		}
+	}
+	public void UpdateSize(int width, int height)
+	{
+		UpdateColumnsCount(width);
+		UpdateRowsCount(height);
+	}
 	private void SwapChildObjects(Transform first, Transform second)
 	{
 		var leftIndex = first.transform.GetSiblingIndex();
