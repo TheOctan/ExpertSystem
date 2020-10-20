@@ -26,12 +26,12 @@ public class ContentManager : MonoBehaviour
 		Height = 1;
 	}
 
-	public void OnAddColumnButtonClick()
+	public void AddColumn()
 	{
 		var column = Instantiate(questionColumnPrefab, transform);
 		SwapChildObjects(addColumn, column);
 		var minusButton = column.GetComponentInChildren<Button>();
-		minusButton.onClick.AddListener(() => { OnRemoveColumnButtonClick(column.GetSiblingIndex()); });
+		minusButton.onClick.AddListener(() => { RemoveColumn(column.GetSiblingIndex()); });
 
 		Width++;
 		for (int i = 1; i < Height; i++)
@@ -40,12 +40,12 @@ public class ContentManager : MonoBehaviour
 		}
 	}
 
-	public void OnAddRowButtonClick()
+	public void AddRow()
 	{
 		var objectContainer = Instantiate(objectContainerPrefab, objectColumn);
 		SwapChildObjects(addRowButton, objectContainer);
 		var minusButton = objectContainer.GetComponentInChildren<Button>();
-		minusButton.onClick.AddListener(() => { OnRemoveRowButtonClick(objectContainer.GetSiblingIndex()); });
+		minusButton.onClick.AddListener(() => { RemoveRow(objectContainer.GetSiblingIndex()); });
 
 		Height++;
 		for (int x = 2; x < transform.childCount - 1; x++)
@@ -55,7 +55,7 @@ public class ContentManager : MonoBehaviour
 		}
 	}
 
-	public void OnRemoveColumnButtonClick(int index)
+	public void RemoveColumn(int index)
 	{
 		if (Width > 1)
 		{
@@ -67,7 +67,7 @@ public class ContentManager : MonoBehaviour
 		}
 	}
 
-	public void OnRemoveRowButtonClick(int index)
+	public void RemoveRow(int index)
 	{
 		if (Height > 1)
 		{
