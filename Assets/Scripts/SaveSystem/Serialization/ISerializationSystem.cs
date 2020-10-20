@@ -8,7 +8,7 @@ namespace Assets.Scripts.SaveSystem.Serialization
 {
 	public interface ISerializationSystem
 	{
-		bool SaveObject<T>(T obj);
-		T LoadObject<T>();
+		bool SerializeObject<T>(T obj);
+		T DeserializeObject<T>();
 	}
 }
