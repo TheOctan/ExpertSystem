@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 [Serializable]
 public class EducationData
 {
-	public List<string> Objects { get; set; }
-	public List<string> Questions { get; set; }
-	public List<bool> Answers { get; set; }
+	public List<string> objects;
+	public List<string> questions;
+	public List<bool> answers;
 
 	public EducationData()
 	{
@@ -22,13 +22,13 @@ public class EducationData
 		StringBuilder stringBuilder = new StringBuilder();
 
 		stringBuilder.Append("Object names: ");
-		Objects.ForEach((obj) => stringBuilder.Append(obj + " "));
+		objects.ForEach((obj) => stringBuilder.Append(obj + " "));
 		
 		stringBuilder.Append("\nQuestions: ");
-		Questions.ForEach((obj) => stringBuilder.Append(obj + " "));
+		questions.ForEach((obj) => stringBuilder.Append(obj + " "));
 		
 		stringBuilder.Append("\nAnswers: ");
-		Answers.ForEach((obj) => stringBuilder.Append(obj + " "));
+		answers.ForEach((obj) => stringBuilder.Append(obj + " "));
 
 		return stringBuilder.ToString();
 	}

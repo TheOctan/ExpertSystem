@@ -3,6 +3,7 @@ using Assets.Scripts.SaveSystem.Serialization;
 using Assets.Scripts.SaveSystem.Serialization.Format;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 
 public class EducationMenu : MonoBehaviour
@@ -11,7 +12,7 @@ public class EducationMenu : MonoBehaviour
 
 	private void Awake()
 	{
-		saveSystem = new XmlSerializationSystem(Application.persistentDataPath + "/Saves/");
+		saveSystem = new JsonSerializationSystem(Application.persistentDataPath + "/Saves/");
 	}
 
 	public void OnLoadButtonClick()
@@ -28,19 +29,19 @@ public class EducationMenu : MonoBehaviour
 
 		var data = new EducationData()
 		{
-			Objects = new List<string>()
+			objects = new List<string>()
 			{
 				"Name1",
 				"Name2",
 				"Name3"
 			},
-			Questions = new List<string>()
+			questions = new List<string>()
 			{
 				"Quest1",
 				"Quest2",
 				"Quest3"
 			},
-			Answers = new List<bool>()
+			answers = new List<bool>()
 			{
 				true, true, true,
 				false, false, false,
