@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -15,10 +16,12 @@ public class ContentManager : MonoBehaviour
 	[Header("Columns")]
 	public RectTransform objectColumn;
 	public RectTransform addColumn;
+	
+	[Header("Buttons")]
 	public RectTransform addRowButton;
 
-	public uint Width { get; private set; }
-	public uint Height { get; private set; }
+	public int Width { get; private set; }
+	public int Height { get; private set; }
 
 	private void Awake()
 	{
@@ -26,48 +29,40 @@ public class ContentManager : MonoBehaviour
 		Height = 1;
 	}
 
-	public void OnAddColumnButtonClick()
+	public void AddColumn()
 	{
-		var column = Instantiate(questionColumnPrefab, transform);
-		SwapChildObjects(addColumn, column);
-		var minusButton = column.GetComponentInChildren<Button>();
-		minusButton.onClick.AddListener(() => { OnRemoveColumnButtonClick(column.GetSiblingIndex()); });
+		var column = InstantieteCell(questionColumnPrefab, transform, addColumn, RemoveColumn);
 
 		Width++;
 		for (int i = 1; i < Height; i++)
 		{
-			var toggleContainer = Instantiate(toggleContainerPrefab, column);
-		}
-	}
-
-	public void OnAddRowButtonClick()
-	{
-		var objectContainer = Instantiate(objectContainerPrefab, objectColumn);
-		SwapChildObjects(addRowButton, objectContainer);
-		var minusButton = objectContainer.GetComponentInChildren<Button>();
-		minusButton.onClick.AddListener(() => { OnRemoveRowButtonClick(objectContainer.GetSiblingIndex()); });
-
-		Height++;
-		for (int x = 2; x < transform.childCount - 1; x++)
-		{
-			var column = transform.GetChild(x);
 			Instantiate(toggleContainerPrefab, column);
 		}
 	}
+	public void AddRow()
+	{
+		InstantieteCell(objectContainerPrefab, objectColumn, addRowButton, RemoveRow);
 
-	public void OnRemoveColumnButtonClick(int index)
+		Height++;
+		for (int i = 2; i < transform.childCount - 1; i++)
+		{
+			var column = transform.GetChild(i);
+			Instantiate(toggleContainerPrefab, column);
+		}
+	}
+	public void RemoveColumn(int index)
 	{
 		if (Width > 1)
 		{
 			var destroyedColumn = transform.GetChild(index);
 			var button = destroyedColumn.GetComponentInChildren<Button>();
 			button.onClick.RemoveAllListeners();
+
 			Destroy(destroyedColumn.gameObject);
 			Width--;
 		}
 	}
-
-	public void OnRemoveRowButtonClick(int index)
+	public void RemoveRow(int index)
 	{
 		if (Height > 1)
 		{
@@ -84,7 +79,54 @@ public class ContentManager : MonoBehaviour
 			Height--;
 		}
 	}
+	public void UpdateColumnsCount(int count)
+	{
+		if (count > 1 && Width != count)
+		{
+			while (Width != count)
+			{
+				if (count > Width)
+				{
+					AddColumn();
+				}
+				else
+				{
+					RemoveColumn(Width - 1);
+				}
+			}
+		}
+	}
+	public void UpdateRowsCount(int count)
+	{
+		if (count > 1 && Height != count)
+		{
+			while (Height != count)
+			{
+				if (count > Height)
+				{
+					AddRow();
+				}
+				else
+				{
+					RemoveRow(Height - 1);
+				}
+			}
+		}
+	}
+	public void UpdateSize(int width, int height)
+	{
+		UpdateColumnsCount(width);
+		UpdateRowsCount(height);
+	}
+	private Transform InstantieteCell(Transform prefab, Transform parent, Transform swappedCell, Action<int> action)
+	{
+		var cell = Instantiate(prefab, parent);
+		SwapChildObjects(swappedCell, cell);
+		var button = cell.GetComponentInChildren<Button>();
+		button.onClick.AddListener(() => { action(cell.GetSiblingIndex()); });
 
+		return cell;
+	}
 	private void SwapChildObjects(Transform first, Transform second)
 	{
 		var leftIndex = first.transform.GetSiblingIndex();

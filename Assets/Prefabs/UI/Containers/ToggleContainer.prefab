@@ -237,7 +237,7 @@ GameObject:
   - component: {fileID: 5309760514572890724}
   m_Layer: 5
   m_Name: Toggle
-  m_TagString: Untagged
+  m_TagString: Toggle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

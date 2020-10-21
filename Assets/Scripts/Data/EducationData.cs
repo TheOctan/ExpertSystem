@@ -12,11 +12,6 @@ public class EducationData
 	public List<string> questions;
 	public List<bool> answers;
 
-	public EducationData()
-	{
-		
-	}
-
 	public override string ToString()
 	{
 		StringBuilder stringBuilder = new StringBuilder();
