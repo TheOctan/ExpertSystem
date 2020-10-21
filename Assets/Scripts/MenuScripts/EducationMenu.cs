@@ -1,4 +1,5 @@
-﻿using Assets.Scripts.SaveSystem;
+﻿using Assets.Scripts.Data;
+using Assets.Scripts.SaveSystem;
 using Assets.Scripts.SaveSystem.Serialization;
 using Assets.Scripts.SaveSystem.Serialization.Format;
 using System.Collections;
@@ -8,47 +9,19 @@ using UnityEngine;
 
 public class EducationMenu : MonoBehaviour
 {
-	private BaseSerializationFileSystem saveSystem;
-
-	private void Awake()
-	{
-		saveSystem = new JsonSerializationSystem(Application.persistentDataPath + "/Saves/");
-	}
+	private readonly string saveKey = "education";
+	
+	public ContextManager contextManager;
 
 	public void OnLoadButtonClick()
 	{
-		Debug.Log(Application.persistentDataPath);
-
-		var objData = saveSystem.DeserializeObject<EducationData>("education");
-		Debug.Log(objData);
+		var educationData = SaveSystem.Load<EducationData>(saveKey);
+		contextManager.UpdateContext(new ContextData(educationData));
 	}
 
 	public void OnSaveButtonClick()
 	{
-		Debug.Log(Application.persistentDataPath);
-
-		var data = new EducationData()
-		{
-			objects = new List<string>()
-			{
-				"Name1",
-				"Name2",
-				"Name3"
-			},
-			questions = new List<string>()
-			{
-				"Quest1",
-				"Quest2",
-				"Quest3"
-			},
-			answers = new List<bool>()
-			{
-				true, true, true,
-				false, false, false,
-				true, true, true
-			}
-		};
-
-		saveSystem.SerializeObject(data, "education");
+		var contextData = contextManager.ReadContext();
+		SaveSystem.Save(saveKey, contextData.GetEducationData());
 	}
 }

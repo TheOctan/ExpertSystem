@@ -8,18 +8,15 @@ using UnityEngine.UI;
 [RequireComponent(typeof(ContentManager))]
 public class ContextManager : MonoBehaviour
 {
-	private ContentManager contentManager;
-
 	public ContextData ContextData { get; private set; }
+
+	private ContentManager contentManager;
+	private readonly int columnOffset = 2;
+	private readonly int columnsAfter = 1;
 
 	private void Awake()
 	{
 		contentManager = GetComponent<ContentManager>();
-	}
-
-	private void Start()
-	{
-
 	}
 
 	public void UpdateContext(ContextData contextData)
@@ -44,6 +41,15 @@ public class ContextManager : MonoBehaviour
 			objectsInput[i].text = contextData.Objects[i];
 		}
 
+		for (int i = 0; i < width; i++)
+		{
+			var column = transform.GetChild(i + columnOffset);
+			var toggles = column.GetComponentsInChildren<Toggle>();
+			for (int j = 0; j < height; j++)
+			{
+				toggles[j].isOn = contextData.Answers[i][j];
+			}
+		}		
 	}
 
 	public ContextData ReadContext()
@@ -52,7 +58,7 @@ public class ContextManager : MonoBehaviour
 		ContextData.Objects = GameObject.FindGameObjectsWithTag("NameObject").Select(obj => obj.GetComponent<InputField>().text).ToList();
 
 		ContextData.Answers.Clear();
-		for (int i = 2; i < transform.childCount - 1; i++)
+		for (int i = columnOffset; i < transform.childCount - columnsAfter; i++)
 		{
 			var column = transform.GetChild(i);
 			ContextData.Answers.Add(column.GetComponentsInChildren<Toggle>().Select(obj => obj.isOn).ToList());
@@ -67,9 +73,9 @@ public class ContextManager : MonoBehaviour
 		{
 			UpdateContext(new ContextData()
 			{
-				Questions = new List<string>() { "Have a wheel?", "Have a wings?", "It's a live object?"},
+				Questions = new List<string>() { "Have a wheel?", "Have a wings?", "It's a live object?" },
 				Objects = new List<string>() { "Car", "Plane", "Bird" },
-				Answers = new List<List<bool>>() { new List<bool>() { true, true, false }, new List<bool>() { false, true, true }, new List<bool>() { false, false, true} }
+				Answers = new List<List<bool>>() { new List<bool>() { true, true, false }, new List<bool>() { false, true, true }, new List<bool>() { false, false, true } }
 			});
 		}
 	}
