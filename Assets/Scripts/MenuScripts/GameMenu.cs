@@ -43,7 +43,7 @@ public class GameMenu : MonoBehaviour
 	}
 	public void ResetButtonClick()
 	{
-		expertSystem.Restart();
+		expertSystem.Start();
 		yesButton.interactable = true;
 		noButton.interactable = true;
 	}

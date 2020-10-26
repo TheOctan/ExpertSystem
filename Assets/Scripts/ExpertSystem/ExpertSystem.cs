@@ -47,7 +47,6 @@ namespace Assets.Scripts.ExpertSystem
 			if (context.IsValid)
 			{
 				contextData = context;
-				cache = context.Clone() as ContextData;
 
 				return true;
 			}
@@ -60,39 +59,17 @@ namespace Assets.Scripts.ExpertSystem
 		{
 			if (IsReady)
 			{
-				if (!IsStarted)
-				{
-					IsStarted = true;
-
-					currentQuestiuon = GetNextQuestion();
-					OnQuestionChanged?.Invoke(currentQuestiuon);
-
-					return true;
-				}
-				else
-				{
-					OnSendWarningMessage?.Invoke("Expert system is started!");
-					return false;
-				}
-			}
-			else
-			{
-				OnSendWarningMessage?.Invoke("Context is not initialized!");
-				return false;
-			}
-		}
-
-		public bool Restart()
-		{
-			if (IsStarted)
-			{
 				Reset();
-				Start();
+				IsStarted = true;
+
+				currentQuestiuon = GetNextQuestion();
+				OnQuestionChanged?.Invoke(currentQuestiuon);
 
 				return true;
 			}
 			else
 			{
+				OnSendWarningMessage?.Invoke("Context is not initialized!");
 				return false;
 			}
 		}
@@ -136,6 +113,7 @@ namespace Assets.Scripts.ExpertSystem
 							else
 							{
 								OnEnded?.Invoke("I do not know what this object is!");
+								IsStarted = false;
 							}
 						}
 						break;
@@ -146,6 +124,7 @@ namespace Assets.Scripts.ExpertSystem
 							if (answer)
 							{
 								OnEnded?.Invoke($"It's a {cache.Objects[0]}!");
+								IsStarted = false;
 							}
 							else
 							{
@@ -157,6 +136,7 @@ namespace Assets.Scripts.ExpertSystem
 						else
 						{
 							OnEnded?.Invoke("I do not know what this object is!");
+							IsStarted = false;
 						}
 
 						break;
