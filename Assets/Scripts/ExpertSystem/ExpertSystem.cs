@@ -18,6 +18,8 @@ namespace Assets.Scripts.ExpertSystem
 		public event Action<string> OnSendWarningMessage;
 
 		private string currentQuestiuon = "";
+		private int currentQuestionIndex = -1;
+
 		private ContextData contextData = null;
 		private ContextData cache;
 
@@ -26,18 +28,26 @@ namespace Assets.Scripts.ExpertSystem
 			IsStarted = false;
 			cache = new ContextData();
 		}
-
 		public ExpertSystem(ContextData context) : this()
 		{
 			SetContext(context);
 		}
 
-		public void SetContext(ContextData context)
+		public bool SetContext(ContextData context)
 		{
-			Reset();
-			contextData = context;
-		}
+			if (context.IsValid)
+			{
+				Reset();
+				contextData = context;
+				cache = context;
 
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+		}
 		public bool Start()
 		{
 			if (IsReady)
@@ -45,7 +55,6 @@ namespace Assets.Scripts.ExpertSystem
 				IsStarted = true;
 				currentQuestiuon = GetNextQuestion();
 				OnQuestionChanged?.Invoke(currentQuestiuon);
-
 				return true;
 			}
 			else
@@ -57,14 +66,35 @@ namespace Assets.Scripts.ExpertSystem
 
 		public bool Reset()
 		{
-			return true;
+			if (IsStarted)
+			{
+				cache = contextData;
+				return true;
+			}
+			else
+			{
+				return false;
+			}
 		}
 
 		public bool SetCurrentAnswer(bool answer)
 		{
 			if (IsStarted)
 			{
+				ShrinkContext(answer);
 
+				currentQuestiuon = GetNextQuestion();
+				OnQuestionChanged?.Invoke(currentQuestiuon);
+
+				if (cache.Objects.Count == 1)
+				{
+					OnEnded?.Invoke($"It's a {cache.Objects[0]}");
+				}
+
+				//if (IsEndQuestions())
+				//{
+				//	OnEnded?.Invoke("");
+				//}
 
 				return true;
 			}
@@ -77,14 +107,40 @@ namespace Assets.Scripts.ExpertSystem
 
 		private string GetNextQuestion()
 		{
-			var questionWeights = contextData.Answers.Select(quest => quest.Count(e => e)).ToList();
+			var questionWeights = cache.Answers.Select(quest => quest.Count(e => e)).ToList();
 			var minWeight = questionWeights.Min();
 			var questionIndex = questionWeights.ToList().IndexOf(minWeight);
 
-			Debug.Log(questionIndex);
-
+			currentQuestionIndex = questionIndex;
 
 			return contextData.Questions[questionIndex];
+		}
+		private bool IsEndQuestions()
+		{
+			return cache.Questions.Count == 0;
+		}
+		private void ShrinkContext(bool answer)
+		{
+			var currentQuestionWeights = cache.Answers[currentQuestionIndex];
+
+			for (int i = 0; i < currentQuestionWeights.Count; i++)
+			{
+				if (currentQuestionWeights[i] != answer)
+				{
+					cache.Objects.RemoveAt(i);
+					RemoveObjectAnswers(i);
+				}
+			}
+
+			cache.Answers.RemoveAt(currentQuestionIndex);
+			cache.Questions.RemoveAt(currentQuestionIndex);
+		}
+		private void RemoveObjectAnswers(int index)
+		{
+			for (int i = 0; i < cache.Answers.Count - 1; i++)
+			{
+				cache.Answers[i].RemoveAt(index);
+			}
 		}
 	}
 }
