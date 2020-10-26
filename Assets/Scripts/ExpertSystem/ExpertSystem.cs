@@ -90,11 +90,14 @@ namespace Assets.Scripts.ExpertSystem
 				{
 					OnEnded?.Invoke($"It's a {cache.Objects[0]}");
 				}
+				else if (cache.Questions.Count == 0 && cache.Objects.Count > 1)
+				{
 
-				//if (IsEndQuestions())
-				//{
-				//	OnEnded?.Invoke("");
-				//}
+				}
+				else
+				{
+					OnEnded?.Invoke("I do not know what this object is!");
+				}
 
 				return true;
 			}
@@ -115,20 +118,20 @@ namespace Assets.Scripts.ExpertSystem
 
 			return contextData.Questions[questionIndex];
 		}
-		private bool IsEndQuestions()
-		{
-			return cache.Questions.Count == 0;
-		}
 		private void ShrinkContext(bool answer)
 		{
 			var currentQuestionWeights = cache.Answers[currentQuestionIndex];
 
-			for (int i = 0; i < currentQuestionWeights.Count; i++)
+			for (int i = 0; i < currentQuestionWeights.Count; )
 			{
 				if (currentQuestionWeights[i] != answer)
 				{
 					cache.Objects.RemoveAt(i);
 					RemoveObjectAnswers(i);
+				}
+				else
+				{
+					i++;
 				}
 			}
 
@@ -137,7 +140,7 @@ namespace Assets.Scripts.ExpertSystem
 		}
 		private void RemoveObjectAnswers(int index)
 		{
-			for (int i = 0; i < cache.Answers.Count - 1; i++)
+			for (int i = 0; i < cache.Answers.Count; i++)
 			{
 				cache.Answers[i].RemoveAt(index);
 			}
