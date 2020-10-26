@@ -83,20 +83,27 @@ namespace Assets.Scripts.ExpertSystem
 			{
 				ShrinkContext(answer);
 
-				currentQuestiuon = GetNextQuestion();
-				OnQuestionChanged?.Invoke(currentQuestiuon);
-
-				if (cache.Objects.Count == 1)
+				if (cache.Questions.Count > 0)
 				{
-					OnEnded?.Invoke($"It's a {cache.Objects[0]}");
-				}
-				else if (cache.Questions.Count == 0 && cache.Objects.Count > 1)
-				{
+					currentQuestiuon = GetNextQuestion();
+					OnQuestionChanged?.Invoke(currentQuestiuon);
 
+					if (cache.Objects.Count == 1)
+					{
+						OnEnded?.Invoke($"It's a {cache.Objects[0]}");
+					}
 				}
 				else
 				{
-					OnEnded?.Invoke("I do not know what this object is!");
+					if (cache.Objects.Count > 1)
+					{
+						var objects = cache.Objects;
+						OnQuestionChanged?.Invoke($"It's a {objects[0]}?");
+					}
+					else
+					{
+						OnEnded?.Invoke("I do not know what this object is!");
+					}
 				}
 
 				return true;
@@ -122,7 +129,7 @@ namespace Assets.Scripts.ExpertSystem
 		{
 			var currentQuestionWeights = cache.Answers[currentQuestionIndex];
 
-			for (int i = 0; i < currentQuestionWeights.Count; )
+			for (int i = 0; i < currentQuestionWeights.Count;)
 			{
 				if (currentQuestionWeights[i] != answer)
 				{
