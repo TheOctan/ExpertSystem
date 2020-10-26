@@ -21,7 +21,7 @@ namespace Assets.Scripts.ExpertSystem
 		private int currentQuestionIndex = -1;
 
 		private ContextData contextData = null;
-		private ContextData cache;
+		private ContextData cache = null;
 
 		private State state;
 
@@ -35,7 +35,6 @@ namespace Assets.Scripts.ExpertSystem
 		public ExpertSystem()
 		{
 			IsStarted = false;
-			cache = new ContextData();
 			state = State.Standart;
 		}
 		public ExpertSystem(ContextData context) : this()
@@ -47,9 +46,8 @@ namespace Assets.Scripts.ExpertSystem
 		{
 			if (context.IsValid)
 			{
-				Reset();
 				contextData = context;
-				cache = context;
+				cache = context.Clone() as ContextData;
 
 				return true;
 			}
@@ -62,10 +60,20 @@ namespace Assets.Scripts.ExpertSystem
 		{
 			if (IsReady)
 			{
-				IsStarted = true;
-				currentQuestiuon = GetNextQuestion();
-				OnQuestionChanged?.Invoke(currentQuestiuon);
-				return true;
+				if (!IsStarted)
+				{
+					IsStarted = true;
+
+					currentQuestiuon = GetNextQuestion();
+					OnQuestionChanged?.Invoke(currentQuestiuon);
+
+					return true;
+				}
+				else
+				{
+					OnSendWarningMessage?.Invoke("Expert system is started!");
+					return false;
+				}
 			}
 			else
 			{
@@ -74,11 +82,13 @@ namespace Assets.Scripts.ExpertSystem
 			}
 		}
 
-		public bool Reset()
+		public bool Restart()
 		{
 			if (IsStarted)
 			{
-				cache = contextData;
+				Reset();
+				Start();
+
 				return true;
 			}
 			else
@@ -87,6 +97,14 @@ namespace Assets.Scripts.ExpertSystem
 			}
 		}
 
+		private void Reset()
+		{
+			state = State.Standart;
+			cache = contextData.Clone() as ContextData;
+			currentQuestionIndex = -1;
+			currentQuestiuon = "";
+			IsStarted = false;
+		}
 		public bool SetCurrentAnswer(bool answer)
 		{
 			if (IsStarted)
@@ -152,7 +170,6 @@ namespace Assets.Scripts.ExpertSystem
 				return false;
 			}
 		}
-
 		private string GetNextQuestion()
 		{
 			var questionWeights = cache.Answers.Select(quest => quest.Count(e => e)).ToList();
