@@ -33,6 +33,9 @@ public class GameMenu : MonoBehaviour
 
 	private void OnEnable()
 	{
+		yesButton.interactable = true;
+		noButton.interactable = true;
+
 		expertSystem.SetContext(contextManager.ContextData);
 		expertSystem.Start();
 	}
