@@ -103,7 +103,7 @@ namespace Assets.Scripts.ExpertSystem
 						}
 						else
 						{
-							if (cache.Objects.Count > 1)
+							if (cache.Objects.Count > 0)
 							{
 								state = State.QuestionEnded;
 
@@ -119,7 +119,7 @@ namespace Assets.Scripts.ExpertSystem
 						break;
 					case State.QuestionEnded:
 
-						if (cache.Objects.Count > 1)
+						if (cache.Objects.Count > 0)
 						{
 							if (answer)
 							{
