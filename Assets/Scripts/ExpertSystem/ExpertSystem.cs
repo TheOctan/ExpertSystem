@@ -23,10 +23,20 @@ namespace Assets.Scripts.ExpertSystem
 		private ContextData contextData = null;
 		private ContextData cache;
 
+		private State state;
+
+		private enum State
+		{
+			Standart = 0,
+			QuestionEnded,
+			ObjectsEnded
+		}
+
 		public ExpertSystem()
 		{
 			IsStarted = false;
 			cache = new ContextData();
+			state = State.Standart;
 		}
 		public ExpertSystem(ContextData context) : this()
 		{
@@ -81,29 +91,57 @@ namespace Assets.Scripts.ExpertSystem
 		{
 			if (IsStarted)
 			{
-				ShrinkContext(answer);
-
-				if (cache.Questions.Count > 0)
+				switch (state)
 				{
-					currentQuestiuon = GetNextQuestion();
-					OnQuestionChanged?.Invoke(currentQuestiuon);
+					case State.Standart:
+						ShrinkContext(answer);
 
-					if (cache.Objects.Count == 1)
-					{
-						OnEnded?.Invoke($"It's a {cache.Objects[0]}");
-					}
-				}
-				else
-				{
-					if (cache.Objects.Count > 1)
-					{
-						var objects = cache.Objects;
-						OnQuestionChanged?.Invoke($"It's a {objects[0]}?");
-					}
-					else
-					{
-						OnEnded?.Invoke("I do not know what this object is!");
-					}
+						if (cache.Questions.Count > 0)
+						{
+							currentQuestiuon = GetNextQuestion();
+							OnQuestionChanged?.Invoke(currentQuestiuon);
+
+							if (cache.Objects.Count == 1)
+							{
+								OnEnded?.Invoke($"It's a {cache.Objects[0]}!");
+							}
+						}
+						else
+						{
+							if (cache.Objects.Count > 1)
+							{
+								state = State.QuestionEnded;
+
+								var objects = cache.Objects;
+								OnQuestionChanged?.Invoke($"Is it a {objects[0]}?");
+							}
+							else
+							{
+								OnEnded?.Invoke("I do not know what this object is!");
+							}
+						}
+						break;
+					case State.QuestionEnded:
+
+						if (cache.Objects.Count > 1)
+						{
+							if (answer)
+							{
+								OnEnded?.Invoke($"It's a {cache.Objects[0]}!");
+							}
+							else
+							{
+								var objects = cache.Objects;
+								objects.RemoveAt(0);
+								OnQuestionChanged?.Invoke($"Is it a {objects[0]}?");
+							}
+						}
+						else
+						{
+							OnEnded?.Invoke("I do not know what this object is!");
+						}
+
+						break;
 				}
 
 				return true;
