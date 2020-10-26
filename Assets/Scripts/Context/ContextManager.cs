@@ -28,8 +28,8 @@ public class ContextManager : MonoBehaviour
 
 		contentManager.UpdateSize(width, height);
 
-		var questionInput = GameObject.FindGameObjectsWithTag("Question").Select(obj => obj.GetComponent<InputField>()).ToArray();
-		var objectsInput = GameObject.FindGameObjectsWithTag("NameObject").Select(obj => obj.GetComponent<InputField>()).ToArray();
+		var questionInput = GetInputFields("Question").ToArray();
+		var objectsInput = GetInputFields("NameObject").ToArray();
 
 		for (int i = 0; i < width; i++)
 		{
@@ -54,10 +54,18 @@ public class ContextManager : MonoBehaviour
 
 	public ContextData ReadContext()
 	{
-		ContextData.Questions = GameObject.FindGameObjectsWithTag("Question").Select(obj => obj.GetComponent<InputField>().text).ToList();
-		ContextData.Objects = GameObject.FindGameObjectsWithTag("NameObject").Select(obj => obj.GetComponent<InputField>().text).ToList();
+		if(ContextData == null)
+		{
+			ContextData = new ContextData();
+		}
+		else
+		{
+			ContextData.Answers.Clear();
+		}
 
-		ContextData.Answers.Clear();
+		ContextData.Questions = GetInputFields("Question").Select(e => e.text).ToList();
+		ContextData.Objects = GetInputFields("NameObject").Select(e => e.text).ToList();
+
 		for (int i = columnOffset; i < transform.childCount - columnsAfter; i++)
 		{
 			var column = transform.GetChild(i);
@@ -67,16 +75,16 @@ public class ContextManager : MonoBehaviour
 		return ContextData;
 	}
 
-	private void Update()
+	public void SaveContext()
 	{
-		if (Input.GetKeyDown(KeyCode.Space))
-		{
-			UpdateContext(new ContextData()
-			{
-				Questions = new List<string>() { "Have a wheel?", "Have a wings?", "It's a live object?" },
-				Objects = new List<string>() { "Car", "Plane", "Bird" },
-				Answers = new List<List<bool>>() { new List<bool>() { true, true, false }, new List<bool>() { false, true, true }, new List<bool>() { false, false, true } }
-			});
-		}
+		ReadContext();
+	}
+
+	private IEnumerable<InputField> GetInputFields(string tag)
+	{
+		var gameObjects = GameObject.FindGameObjectsWithTag(tag);
+		var inputFieldComponents = gameObjects.Select(obj => obj.GetComponent<InputField>());
+
+		return inputFieldComponents;
 	}
 }

@@ -5,19 +5,13 @@ using UnityEngine.UI;
 
 public class NewBehaviourScript : MonoBehaviour
 {
-	public GameObject button;
-
-	private void Start()
+	public void OnButtonclickOne()
 	{
-		
+		Debug.Log(1);
 	}
 
-	public void OnDestroyButtonClick()
+	public void OnButtonclickTwo()
 	{
-		Destroy(button);
-		Debug.Log("Destroyed");
+		Debug.Log(2);
 	}
-
-
-
 }

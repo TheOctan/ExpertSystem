@@ -6,11 +6,13 @@ using System.Threading.Tasks;
 
 namespace Assets.Scripts.Data
 {
-	public class ContextData
+	public class ContextData : ICloneable
 	{
 		public List<string> Objects { get; set; }
 		public List<string> Questions { get; set; }
 		public List<List<bool>> Answers { get; set; }
+
+		public bool IsValid => Questions.Count == Answers.Count && Objects.Count == Answers[0].Count;
 
 		public ContextData()
 		{
@@ -53,6 +55,16 @@ namespace Assets.Scripts.Data
 			}
 
 			return this;
+		}
+
+		public object Clone()
+		{
+			ContextData contextData = new ContextData();
+			contextData.Objects = new List<string>(Objects);
+			contextData.Questions = new List<string>(Questions);
+			contextData.Answers = new List<List<bool>>(Answers.Select(e => e.ToList()));		
+
+			return contextData;
 		}
 	}
 }
