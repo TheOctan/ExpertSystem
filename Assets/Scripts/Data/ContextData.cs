@@ -12,6 +12,8 @@ namespace Assets.Scripts.Data
 		public List<string> Questions { get; set; }
 		public List<List<bool>> Answers { get; set; }
 
+		public bool IsValid => Questions.Count == Answers.Count && Objects.Count == Answers[0].Count;
+
 		public ContextData()
 		{
 			Answers = new List<List<bool>>();
