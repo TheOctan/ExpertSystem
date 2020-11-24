@@ -8,11 +8,11 @@ using UnityEngine;
 
 namespace Assets.Scripts.SaveSystem.Serialization.Format
 {
-	public class JsonSerializationSystem : BaseSerializationFileSystem
+	public class JsonUnitySerializationSystem : BaseSerializationFileSystem
 	{
 		public override string Extension => "json";
 
-		public JsonSerializationSystem(string directoryName) : base(directoryName)
+		public JsonUnitySerializationSystem(string directoryName) : base(directoryName)
 		{
 		}
 

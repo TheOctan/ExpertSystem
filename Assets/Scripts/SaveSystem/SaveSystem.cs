@@ -12,7 +12,7 @@ namespace Assets.Scripts.SaveSystem
 {
 	public class SaveSystem
 	{
-		private static ISerializationFileSystem serializationFileSystem = new JsonSerializationSystem(Application.persistentDataPath + "/Saves/");
+		private static ISerializationFileSystem serializationFileSystem = new JsonUnitySerializationSystem(Application.persistentDataPath + "/Saves/");
 
 		public static bool Save<T>(string saveName, T saveData)
 		{
